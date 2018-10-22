@@ -1,4 +1,3 @@
-
 #-*- coding: utf-8 -*-
 
 #https://pmoracho.github.io/blog/2017/01/04/NLTK-mi-tutorial/
@@ -16,6 +15,7 @@ from nltk.tokenize import word_tokenize
 from nltk.corpus import wordnet
 from nltk.stem import PorterStemmer
 from nltk.stem import SnowballStemmer
+from pattern.es import suggest
 import glob
 import os
 
@@ -34,18 +34,20 @@ import os
 
 #tokens = word_tokenize(raw)
 
-print glob.glob('*.txt')
-filepath = str(glob.glob('*.txt'))
-sentence = open(filepath, "r")
-os.system("rm " + filepath)
-print sentence
+filepath = str(glob.glob('*.txt')).split("]")[0]
+filepath = filepath.split("[")[1]
+filepath = filepath.split("'")[1]
+with open(filepath, 'r') as myfile:
+    sentence=myfile.read().replace('\n', '')
+
+#os.system("rm " + filepath)
 
 # extract productions from three trees and induce the PCFG
 #print("Induce PCFG grammar from treebank data:")
 
 productions = []
 #etiquetas de los diferentes corpus predeterminados
-item = treebank._fileids[0]
+#item = treebank._fileids[0]
 #la 0 tiene las palabras: Pierre Vinken 61 years old will join the board as a nonexecutive director Nov. 29
 
 #for tree in treebank.parsed_sents(item)[:3]:
@@ -57,10 +59,10 @@ item = treebank._fileids[0]
 	#productions += tree.productions()
 
 #estos token ya son del texto, no del predeterminado. Es dividir el texto por palabras.
-#tokens = nltk.word_tokenize(sentence)#unicode(sentence, "utf-8")
+tokens = nltk.word_tokenize(sentence)#unicode(sentence, "utf-8")
 
 #literalmente el texto.
-#text = nltk.Text(tokens)
+text = nltk.Text(tokens)
 
 #se encarga de dar el diccionario del texto.
 #print(datetime.datetime.now(),"Diccionario:");
@@ -69,8 +71,10 @@ item = treebank._fileids[0]
 #print(datetime.datetime.now(),spanish_stemmer.stem("Hola como estas"))
 
 #busca el set de sinónimos de la palabra y permite empezar a acceder a todas sus caracteristicas-
-syn = wordnet.synsets("NLP")
-print(datetime.datetime.now(),syn[0].definition())
+# syn = wordnet.synsets(tokens[2])
+# print syn
+#print(datetime.datetime.now(),syn[0].definition())
+#syn[0].definition()
 
 #Infinitivo del verbo (working)
 #stemmer = PorterStemmer()
@@ -106,10 +110,12 @@ print(datetime.datetime.now(),syn[0].definition())
 #print(datetime.datetime.now(),sorted(set(text)))
 
 #Búsqueda de patrones
-print(datetime.datetime.now(),text.findall("<un>(<.*>)<especial>"))
+#print(datetime.datetime.now(),text.findall("<un>(<.*>)<especial>"))
 
 #Concordancia de la palabra "red"
-#print(datetime.datetime.now(),text.concordance("red"))
+#print tokens[1]
+#print(text.concordance(tokens[1], lines=5))
+print suggest(tokens[1])
 
 #Concordancia de la palabra (red) (primeras 5)
 #print(datetime.datetime.now(),text.concordance("red", width=30, lines=5))
