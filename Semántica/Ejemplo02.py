@@ -1,3 +1,4 @@
+
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
@@ -78,86 +79,83 @@ for tree in treebank.parsed_sents(item)[:3]:
 
 	productions += tree.productions()
 
-#print()
-
 #estos token ya son del texto, no del predeterminado. Es dividir el texto por palabras.
 tokens = nltk.word_tokenize(unicode(sentence, "utf-8"))
 
 #literalmente el texto.
 text = nltk.Text(tokens)
 
-#print(datetime.datetime.now(),"Diccionario:");
+#se encarga de dar el diccionario del texto.
+print(datetime.datetime.now(),"Diccionario:");
 #se encarga de quitar los sufijos de las palabras
 spanish_stemmer = SnowballStemmer('spanish')
-#print(datetime.datetime.now(),spanish_stemmer.stem("Hola como estas"))
+print(datetime.datetime.now(),spanish_stemmer.stem("Hola como estas"))
 
-
-#print(datetime.datetime.now(),"Definicion:");
 #busca el set de sinónimos de la palabra y permite empezar a acceder a todas sus caracteristicas-
 syn = wordnet.synsets("NLP")
-#print(datetime.datetime.now(),syn[0].definition())
+print(datetime.datetime.now(),syn[0].definition())
 
-#print(datetime.datetime.now(),"Diminutivo del verbo (working):");
+#Infinitivo del verbo (working)
 stemmer = PorterStemmer()
-#print(datetime.datetime.now(),stemmer.stem('working'))
+print(datetime.datetime.now(),stemmer.stem('working'))
 
-#print(datetime.datetime.now(),"Tipo:");
-#print(datetime.datetime.now(),type(tokens))
+#el # TEMP: ipo de tokens
+print(datetime.datetime.now(),type(tokens))
 
-#print(datetime.datetime.now(),"Len:");
-#print(datetime.datetime.now(),len(tokens))
+#Longitud de los tokens
+print(datetime.datetime.now(),len(tokens))
 
-#print(datetime.datetime.now(),"Token 10:");
-#print(datetime.datetime.now(),tokens[:10])
+#Primeros 10 tokens.
+print(datetime.datetime.now(),tokens[:10])
 
-#print(datetime.datetime.now(),"Separacion por Parrafos:");
-#print(sent_tokenize(unicode(sentence, "utf-8")))
+#"Separacion por Parrafos:");
+print(sent_tokenize(unicode(sentence, "utf-8")))
 
-#print(datetime.datetime.now(),"Separacion por palabras:");
-#print(word_tokenize(unicode(sentence, "utf-8")))
+#"Separacion por palabras:");
+print(word_tokenize(unicode(sentence, "utf-8")))
 
-#print(datetime.datetime.now(),"Sintaxis:");
+#"Sintaxis:");
 tagged = nltk.pos_tag(tokens)
-#print(datetime.datetime.now(),tagged[0:10])
 
-#print(datetime.datetime.now(),"Entities:");
+#"Entities:");
 entities = nltk.chunk.ne_chunk(tagged)
 #print(datetime.datetime.now(),entities[50])
 
-#a=list[entities]
-#t = treebank.parsed_sents('wsj_0001.mrg')[0]
-#t.draw()
-#print(datetime.datetime.now(),"Ordenas alfabeticamente:");
-#print(datetime.datetime.now(),sorted(set(text)))
+#dibujar árbol
+a=list[entities]
+t = treebank.parsed_sents('wsj_0001.mrg')[0]
+t.draw()
+#Ordenar alfabéticamente.
+print(datetime.datetime.now(),sorted(set(text)))
 
-#print(datetime.datetime.now(),"Búsqueda de patrones:");
-#print(datetime.datetime.now(),text.findall("<un>(<.*>)<especial>"))
+#Búsqueda de patrones
+print(datetime.datetime.now(),text.findall("<un>(<.*>)<especial>"))
 
-#print(datetime.datetime.now(),"Concordancia de la palabra (red):");
-#print(datetime.datetime.now(),text.concordance("red"))
+#Concordancia de la palabra "red"
+print(datetime.datetime.now(),text.concordance("red"))
 
-#print(datetime.datetime.now(),"Concordancia de la palabra (red) (primeras 5):");
-#print(datetime.datetime.now(),text.concordance("red", width=30, lines=5))
+#Concordancia de la palabra (red) (primeras 5)
+print(datetime.datetime.now(),text.concordance("red", width=30, lines=5))
 
-#print(datetime.datetime.now(),"Unidades fraseológicas de dos o más palabras que se usan muy habitualmente combinadas:")
-#print(datetime.datetime.now(),text.collocations(10))
+#Unidades fraseológicas de dos o más palabras que se usan muy habitualmente combinadas
+print(datetime.datetime.now(),text.collocations(10))
 
-#print(datetime.datetime.now(),"Palabras que aparecen en los mismos contexto de una palabra específica (learning):")
-#print(datetime.datetime.now(),text.similar("red"))
+#Palabras que aparecen en los mismos contexto de una palabra específica (learning)
+print(datetime.datetime.now(),text.similar("red"))
 
-#print(datetime.datetime.now(),"Palabra que sólo aparece una vez dentro de un contexto (primeras 20):")
+#Palabra que sólo aparece una vez dentro de un contexto (primeras 20)
 #frecuencia de una palabra en especifico
 fdist1 = FreqDist(text)
-#print(datetime.datetime.now(),fdist1.hapaxes()[:20])
+print(datetime.datetime.now(),fdist1.hapaxes()[:20])
 
-#print(datetime.datetime.now(),"Palabras más comunes (red, neurona):");
-#print(datetime.datetime.now(),text.common_contexts(["red"]))
+#Palabras más comunes (red, neurona)
+print(datetime.datetime.now(),text.common_contexts(["red"]))
 
-#print(datetime.datetime.now(),"Palabras más comunes:");
+#Palabras más comunes
 fdist1a = FreqDist(text)
-#print([i for i in fdist1a.most_common(1000) if len(i[0]) > 5])
+print([i for i in fdist1a.most_common(1000) if len(i[0]) > 5])
 
-#text.dispersion_plot(["Learning", "datos", "aprendizaje", "ejemplo", "neurona", "red"])
+text.dispersion_plot(["Learning", "datos", "aprendizaje", "ejemplo", "neurona", "red"])
 
 #Este es un dato muy lindo que podemos calcular muy fácilmente sobre cualquier texto.
 #La riqueza léxica representa la variedad de términos usados en un texto con relación a la cantidad total, la fórmula
