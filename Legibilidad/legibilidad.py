@@ -27,13 +27,6 @@ def conversion(pdf_name, quality, dir):
     a = 0
     for x in image:
         z1 = str(a) + ".jpg"
-        # x = cv2.cvtColor(np.asarray(x), cv2.COLOR_BGR2GRAY)
-        # kernel = np.ones((1, 1), np.uint8)
-        # x = cv2.dilate(x, kernel, iterations=1)
-        # x = cv2.erode(x, kernel, iterations=1)
-        # x = cv2.GaussianBlur(x, (5, 5), 0)
-        # x = cv2.threshold(x, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)[1]
-        # cv2.imwrite(z1, x)
         x.save(z1, 'JPEG')
         a+=1
 
@@ -103,7 +96,7 @@ def analisis(path, data):
                 t=0.0
             else:
                 t=sum/long
-            os.system("rm outputbase"+str(index)+".tsv")
+            #os.system("rm outputbase"+str(index)+".tsv")
             confidence = []
             height = []
             width = []

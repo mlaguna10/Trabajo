@@ -1,6 +1,6 @@
 icruzVerde a7
 
-Droguerfas y Farmacias Cruz Verde SA S NIT 800 149 695-1
+Droguerfas y Farmacias Cruz Verde SAS NIT 800 149 695-1
 Calle 97 No 13-14 Piso 1 Bogota Colombia PBX 4924860 Fax 4924860
 SOMOS RETENEDORES DE IVA
 
@@ -21,7 +21,7 @@ TELEFONO
  
 
 DESCRIPCION la VALOR UNITARIO | DESCTO
-EXFORGE HCT (5+ 160+ 12 5)MG TAB REC INST CAJ X 20 PA. $5 26600 so00
+EXF0RGE HCT (5+ 160+ 12 5)MG TAB REC INST CAJ X 20 PA. $5 26600 so00
 AMLODIPINO BESILATO*VALSARTAN? CUM 20015778-03-0C09DX01
 
  
@@ -68,9 +68,9 @@ TOTAL A PAGAR $147,448 00
 
 ISON CIENTO CUARENTA Y SIETE MIL CUATROCIENTOS CUARENTA Y OCHO PESOS CON
 
-00/100 MONEDA CORRIENTE “*****
+00/100 MONEDA CORRIENTE *****
 
-‘Si esta factura no es pagada dentro del pazo fyado causard intereses de mora a la tasa maxima legal vigente permitida
+Si esta factura no es pagada dentro del pazo fyado causard intereses de mora a la tasa maxima legal vigente permitida
 Factura por Computador
 
     

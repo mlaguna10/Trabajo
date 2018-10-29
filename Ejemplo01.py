@@ -27,6 +27,7 @@ if __name__ == '__main__':
   cv2.imwrite(save_path, img)
 
   text = pytesseract.image_to_string(img, config=config)
+  print words = pytesseract.image_to_data(img, config=config)
   file = open("texto_" + str(imPath) + ".txt", "w")
   file.write(u''.join(text).encode('utf-8'))
   file.close()

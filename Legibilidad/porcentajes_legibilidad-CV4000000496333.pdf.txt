@@ -1,0 +1,11 @@
+El documento analizado fue: -CV4000000496333.pdf
+La legibilidad de la imagen 1 es: 82.18%
+La legibilidad de la imagen 2 es: 80.30%
+La legibilidad de la imagen 3 es: 34.98%
+La legibilidad de la imagen 4 es: 63.22%
+La legibilidad de la imagen 5 es: 92.90%
+La legibilidad de la imagen 6 es: 95.00%
+El tiempo de conversión del pdf a jpg es de: 1.53206706047 s.
+El tiempo de procesamiento de tesseract por cada imagen es de: 1.41347781817 s.
+El tiempo de analisis total es de: 0.0462598800659 s.
+El valor de calidad dpi utilizado fue de: 200.
