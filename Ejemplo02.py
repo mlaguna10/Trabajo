@@ -60,7 +60,6 @@ def split_words(text):
 def fix_words(words, conf):
     s=0
     sentence = []
-    #print words, conf
     for i in range(len(words)):
         if(conf[i]==1):
             word, val = suggest(words[i].lower())[0]
@@ -70,6 +69,8 @@ def fix_words(words, conf):
                 elif(words[i][0].isupper()):
                     word=word[0].upper() + word[1:]
                 sentence.append(word.encode('utf8'))
+            elif(i+1!=len(words)):
+                #aqui va coger la palabra de al lado para un mejor val
             else:
                 sentence.append(words[i])
         else:
@@ -149,8 +150,6 @@ for i in range(len(texto)):
             file.write(u"\n")
         else:
             z=texto[i]
-            for i in range(len(z)):
-                z[i] = z[i].decode('utf8')
             nombre = u' '.join(z)
             file.write(nombre)
 file.close()
