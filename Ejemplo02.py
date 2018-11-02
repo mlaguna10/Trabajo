@@ -6,6 +6,7 @@
 
 import sys
 import nltk
+import numpy as np
 from nltk.corpus import treebank
 from nltk.metrics import edit_distance
 from urllib2 import Request
@@ -25,6 +26,7 @@ import glob
 from difflib import SequenceMatcher
 import os
 import re
+from PIL import Image, ImageFont, ImageDraw, ImageEnhance
 
 well_spell_words = []
 words = []
@@ -33,6 +35,8 @@ text = []
 confidence = []
 height = []
 width = []
+x = []
+y = []
 texto = []
 
 def getindices(s):
@@ -57,8 +61,16 @@ def split_words(text):
                 words.append(text[i])
     return words
 
+def unir(a,b,c,d):
+    r = []
+    for i in range(len(a)):
+        r.append([a[i], b[i], c[i] + a[i], d[i] + b[i]])
+    return r
+
 def fix_words(words, conf):
     s=0
+    c=False
+    d=False
     sentence = []
     for i in range(len(words)):
         if(conf[i]==1):
@@ -69,13 +81,38 @@ def fix_words(words, conf):
                 elif(words[i][0].isupper()):
                     word=word[0].upper() + word[1:]
                 sentence.append(word.encode('utf8'))
-            elif(i+1!=len(words)):
-                #aqui va coger la palabra de al lado para un mejor val
+            #corrección de dos palabras
+            # elif(i+1!=len(words)):
+            #     r = words[i] + words[i+1]
+            #     word, val = suggest(r.lower())[0]
+            #     if(val>=0.6):
+            #         if(words[i].isupper()):
+            #             word=word.upper()
+            #         elif(words[i][0].isupper()):
+            #             word=word[0].upper() + word[1:]
+            #         sentence.append(word.encode('utf8'))
+            #         c=True
+            #     else:
+            #         if(c):
+            #             c=False
+            #             sentence.append(words[i+1])
+            #             d = True
+            #         else:
+            #             if(d):
+            #                 d=False
+            #             else:
+            #                 sentence.append(words[i])
             else:
                 sentence.append(words[i])
         else:
             sentence.append(words[i])
     return sentence
+
+def buscar(words, word):
+    for i in range(len(words)):
+        a,b = words[i].split(" ")
+        if(a==word):
+            return b
 
 def good_words_filter(words):
     s=0
@@ -106,20 +143,31 @@ filepath = sys.argv[2]
 with codecs.open(filepath) as tsvfile:
     tsvreader = csv.reader(tsvfile, delimiter="\t")
     for line in tsvreader:
+        text.append(line[-1][:].replace(" ",""))
         confidence.append(line[-2][:].replace(" ",""))
         height.append(line[-3][:].replace(" ",""))
         width.append(line[-4][:].replace(" ",""))
-        text.append(line[-1][:].replace(" ",""))
+        y.append(line[-5][:].replace(" ",""))
+        x.append(line[-6][:].replace(" ",""))
     confidence.pop(0)
     height.pop(0)
     width.pop(0)
     text.pop(0)
+    x.pop(0)
+    y.pop(0)
     confidence = list(map(int, confidence))
     height = list(map(int, height))
     width = list(map(int, width))
+    x = list(map(int, x))
+    y = list(map(int, y))
     text = list(map(unicode,text))
+    coord = unir(x,y,width,height)
+    positions = dict(zip(text, coord))
     dictionary = dict(zip(text,confidence))
 tsvfile.close()
+
+#imagen a modificar
+imagepath = sys.argv[3]
 
 #os.system("rm " + filepath)
 
@@ -159,9 +207,39 @@ with codecs.open(filepath, 'r', encoding='utf8') as myfile:
     well_spell_words.append(myfile.readlines())
 myfile.close()
 
+with codecs.open(filepath, 'r', encoding='utf8') as myfile:
+    data = myfile.read()
+myfile.close()
+
+#https://www.ling.upenn.edu/courses/Fall_2003/ling001/penn_treebank_pos.html qué es cada nomenclatura
+text = word_tokenize(str(data))
+s = nltk.pos_tag(text)
+critical_words = []
+for i in range(len(s)):
+    a, b = s[i]
+    if(b=='NNS' or b == 'NNP'):
+        critical_words.append(a)
+
 palabra = raw_input("Inserte la palabra que desea buscar en la imagen:")
 for i in range(len(well_spell_words[0])):
     words = nltk.word_tokenize(well_spell_words[0][i])
     for j in range(len(words)):
-        if(palabra == words[j]):
-            print "si"
+        if(palabra.lower() == words[j].lower()):
+            x1,y1,x2,y2 = positions[words[j]]
+            source_img = Image.open(imagepath).convert("RGB")
+            draw = ImageDraw.Draw(source_img)
+            draw.line(((x1, y1), (x2, y1)), fill="red",width=2)
+            draw.line(((x1, y2), (x2, y2)), fill="red",width=2)
+            draw.line(((x1, y1), (x1, y2)), fill="red",width=2)
+            draw.line(((x2, y1), (x2, y2)), fill="red",width=2)
+            source_img.save("image_changed.jpg", "JPEG")
+
+            file = codecs.open("coordinates.txt", "w", encoding='utf-8')
+            file.write("Palabra buscada: " +str(palabra) + ". " + "x1: " + str(x1) + " " + "y1: " + str(x2) + " " + "x2: " + str(x2) + " " + "y2: " + str(y2) + " " + "\n")
+            if(words[j] in critical_words):
+                with codecs.open("nltk_dict.txt", 'r', encoding='utf8') as myfile2:
+                    tipo = buscar(myfile2.readlines(),words[j].lower())
+                myfile2.close()
+                file.write(u"La palabra buscada está asociada a la clase: " + str(tipo) + "\n")
+            file.write("Nombre de la imagen modificada: " + imagepath)
+            file.close()
